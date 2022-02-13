@@ -1,7 +1,7 @@
 // A custom hook that debounce.
 import { useEffect, useState } from 'react';
 
-const useDebounce = (value: unknown, delay?: number) => {
+const useDebounce = <V>(value: V, delay?: number): V => {
   const [debounceValue, setDebounceValue] = useState(value);
 
   useEffect(() => {
