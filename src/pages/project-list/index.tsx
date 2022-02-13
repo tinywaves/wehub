@@ -16,7 +16,7 @@ export const ProjectListPage = () => {
     name: '',
     personId: ''
   });
-  const debounceParam = useDebounce(param, 2000);
+  const debounceParam = useDebounce(param, 200);
   const [list, setList] = useState([]);
 
   // get projects.
