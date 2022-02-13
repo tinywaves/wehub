@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const SearchPanel = ({ users, param, setParam }) => {
   return (
     <form>
@@ -29,3 +27,5 @@ export const SearchPanel = ({ users, param, setParam }) => {
     </form>
   );
 };
+
+export default SearchPanel;

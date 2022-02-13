@@ -1,6 +1,4 @@
-import React from 'react';
-
-export const List = ({ list, users }) => {
+export const ListTable = ({ list, users }) => {
   return (
     <table>
       <thead>
@@ -22,3 +20,5 @@ export const List = ({ list, users }) => {
     </table>
   );
 };
+
+export default ListTable;

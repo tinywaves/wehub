@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import QueryString from 'qs';
 
-import { SearchPanel } from './search-panel';
-import { List } from './list-table';
+import SearchPanel from './search-panel';
+import List from './list-table';
 
 import { cleanObject } from 'utils';
+import useMount from 'hooks/useMount';
+import useDebounce from 'hooks/useDebounce';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -14,27 +16,28 @@ export const ProjectListPage = () => {
     name: '',
     personId: ''
   });
+  const debounceParam = useDebounce(param, 2000);
   const [list, setList] = useState([]);
 
-  // get projects
+  // get projects.
   useEffect(() => {
     fetch(
-      `${apiUrl}/projects?${QueryString.stringify(cleanObject(param))}`
+      `${apiUrl}/projects?${QueryString.stringify(cleanObject(debounceParam))}`
     ).then(async response => {
       if (response.ok) {
         setList(await response.json());
       }
     });
-  }, [param]);
+  }, [debounceParam]);
 
-  // initialize users
-  useEffect(() => {
+  // initialize users.
+  useMount(() => {
     fetch(`${apiUrl}/users`).then(async response => {
       if (response.ok) {
         setUsers(await response.json());
       }
     });
-  }, []);
+  });
 
   return (
     <>
