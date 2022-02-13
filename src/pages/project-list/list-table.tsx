@@ -13,7 +13,7 @@ interface ListTableProps {
   users: User[];
 }
 
-export const ListTable = ({ list, users }: ListTableProps) => {
+const ListTable = ({ list, users }: ListTableProps) => {
   return (
     <table>
       <thead>

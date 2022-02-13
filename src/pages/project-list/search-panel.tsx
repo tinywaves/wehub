@@ -15,7 +15,7 @@ interface SearchPanelProps {
   setParam: (param: SearchPanelProps['param']) => void;
 }
 
-export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
+const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
   return (
     <form>
       <div>
