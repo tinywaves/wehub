@@ -1,5 +1,7 @@
 # 安装 jira-dev-tool
 
+jira-dev-tool: https://www.npmjs.com/package/jira-dev-tool
+
 ## 第一步
 
 ```bash
