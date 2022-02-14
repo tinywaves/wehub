@@ -4,11 +4,10 @@ import QueryString from 'qs';
 import SearchPanel from 'pages/project-list/search-panel';
 import List from 'pages/project-list/list-table';
 
+import { apiUrl } from 'constant';
 import { cleanObject } from 'utils';
 import useMount from 'hooks/useMount';
 import useDebounce from 'hooks/useDebounce';
-
-const apiUrl = process.env.REACT_APP_API_URL;
 
 const ProjectListPage = () => {
   const [users, setUsers] = useState([]);
