@@ -1,20 +1,11 @@
 import { FormEvent } from 'react';
 
-import { apiUrl } from 'constant';
+import { apiUrl } from 'common';
 
 const LoginPage = () => {
   // Login function.
   const login = (param: { username: string; password: string }) => {
-    fetch(`${apiUrl}/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(param)
-    }).then(async response => {
-      if (response.ok) {
-      }
-    });
+    
   };
 
   // Handle submit.

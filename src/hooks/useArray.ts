@@ -11,6 +11,7 @@ const useArray = <V>(initialArray: V[]) => {
   // Remove an specific item.
   const removeIndex = (index: number) => {
     const temp = [...arrayValue];
+
     temp.splice(index, 1);
     setArrayValue(temp);
   };
