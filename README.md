@@ -1,19 +1,3 @@
-# 安装 jira-dev-tool
-
-jira-dev-tool: https://www.npmjs.com/package/jira-dev-tool
-
-## 第一步
-
-```bash
-yarn add jira-dev-tool@latest
-```
-
-## 第二步
-
-```bash
-npx msw init public
-```
-
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
