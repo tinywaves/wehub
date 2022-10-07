@@ -1,11 +1,15 @@
-import ProjectListPage from './pages/project-list';
+import React from 'react';
 
-function App() {
+import ProjectListPage from './pages/project-list';
+import Login from './pages/login';
+
+const App: React.FC = () => {
   return (
     <>
       <ProjectListPage />
+      <Login />
     </>
   );
-}
+};
 
 export default App;
