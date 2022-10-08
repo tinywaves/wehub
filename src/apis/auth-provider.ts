@@ -18,7 +18,7 @@ export const handleUserResponse = ({ user }: { user: User; }) => {
 
 // A function to login.
 export const login = (param: { username: string, password: string; }) => {
-  fetch(`${url}/login`, {
+  return fetch(`${url}/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -27,13 +27,15 @@ export const login = (param: { username: string, password: string; }) => {
   }).then(async response => {
     if (response.ok) {
       return handleUserResponse(await response.json());
+    } else {
+      return Promise.reject(param);
     }
   });
 };
 
 // A function to register.
 export const register = (param: { username: string, password: string; }) => {
-  fetch(`${url}/register`, {
+  return fetch(`${url}/register`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -42,11 +44,13 @@ export const register = (param: { username: string, password: string; }) => {
   }).then(async response => {
     if (response.ok) {
       return handleUserResponse(await response.json());
+    } else {
+      return Promise.reject(param);
     }
   });
 };
 
 // A function to logout.
-export const logout = () => {
+export const logout = async () => {
   window.localStorage.removeItem(localStorageKey);
 };

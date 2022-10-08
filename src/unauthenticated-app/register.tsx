@@ -1,11 +1,9 @@
 import React, { FormEvent } from 'react';
 
-const url = process.env.REACT_APP_API_URL;
+import { useAuth } from '../hooks';
 
-const Login: React.FC = () => {
-  const login = (param: { username: string; password: string }) => {
-    
-  };
+const Register: React.FC = () => {
+  const { register } = useAuth();
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -13,7 +11,7 @@ const Login: React.FC = () => {
     const username = (e.currentTarget.elements[0] as HTMLInputElement).value;
     const password = (e.currentTarget.elements[1] as HTMLInputElement).value;
 
-    login({ username, password });
+    register({ username, password });
   };
 
   return (
@@ -26,9 +24,9 @@ const Login: React.FC = () => {
         <label htmlFor="password">密码</label>
         <input type="password" id="password" />
       </div>
-      <button type="submit">登录</button>
+      <button type="submit">注册</button>
     </form>
   );
 };
 
-export default Login;
+export default Register;

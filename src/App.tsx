@@ -1,15 +1,14 @@
 import React from 'react';
 
-import ProjectListPage from './pages/project-list';
-import Login from './pages/login';
+import { useAuth } from './hooks';
+
+import AuthenticatedApp from './authenticated-app';
+import UnauthenticatedApp from './unauthenticated-app';
 
 const App: React.FC = () => {
-  return (
-    <>
-      <ProjectListPage />
-      <Login />
-    </>
-  );
+  const { user } = useAuth();
+
+  return <>{user ? <AuthenticatedApp /> : <UnauthenticatedApp />}</>;
 };
 
 export default App;
