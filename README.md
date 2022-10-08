@@ -24,6 +24,10 @@ You can use JSON Server for data simulation.
 
 To learn more, check out the [JSON Server GitHub homepage](https://github.com/typicode/json-server).
 
+## JSON Web Tokens - JWT
+
+To learn more, check out the [JSON Web Tokens official website](https://jwt.io/).
+
 ## optional settings
 
 ### 1. prettier
