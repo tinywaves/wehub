@@ -6,7 +6,7 @@ const url = process.env.REACT_APP_API_URL;
 
 // Get token in localStorage.
 export const getToken = () => {
-  window.localStorage.getItem(localStorageKey);
+  return window.localStorage.getItem(localStorageKey);
 };
 
 // Set token to localStorage.

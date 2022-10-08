@@ -1,6 +1,6 @@
 interface Project {
   id: string;
-  content: string;
+  name: string;
   personId: string;
   organization: string;
   created: string;

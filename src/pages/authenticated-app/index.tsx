@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { useAuth } from '../hooks';
+import { useAuth } from '../../hooks';
 
-import ProjectListPage from '../pages/project-list';
+import ProjectListPage from '../project-list';
 
 const AuthenticatedApp: React.FC = () => {
   const { logout } = useAuth();

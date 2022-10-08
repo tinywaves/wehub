@@ -22,7 +22,7 @@ const ListTable: React.FC<ListTableProps> = ({ searchedList, users }) => {
           searchedList.map(item => {
             return (
               <tr key={item.id}>
-                <td>{item.content}</td>
+                <td>{item.name}</td>
                 <td>
                   {
                     users.find(user => user.id === item.personId)?.name || '查无此项'

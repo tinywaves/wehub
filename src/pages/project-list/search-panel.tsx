@@ -5,7 +5,7 @@ import User from '../../types/user';
 interface SearchPanelProps {
   users: User[];
   searchParam: {
-    content: string;
+    name: string;
     personId: string;
   };
   setSearchParam: (searchParam: SearchPanelProps['searchParam']) => void;
@@ -21,11 +21,11 @@ const SearchPanel: React.FC<SearchPanelProps> = ({
       <div>
         <input
           type="text"
-          value={searchParam.content}
+          value={searchParam.name}
           onChange={e =>
             setSearchParam({
               ...searchParam,
-              content: e.target.value
+              name: e.target.value
             })
           }
         />
@@ -39,15 +39,13 @@ const SearchPanel: React.FC<SearchPanelProps> = ({
           }
         >
           <option value="">负责人</option>
-          {
-            users.map(user => {
-              return (
-                <option value={user.id} key={user.id}>
-                  {user.name}
-                </option>
-              );
-            })
-          }
+          {users.map(user => {
+            return (
+              <option value={user.id} key={user.id}>
+                {user.name}
+              </option>
+            );
+          })}
         </select>
       </div>
     </form>

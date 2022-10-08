@@ -20,35 +20,35 @@
   "projects": [
     {
       "id": 1,
-      "content": "骑手管理",
+      "name": "骑手管理",
       "personId": 1,
       "organization": "外卖组",
       "created": 1604989757139
     },
     {
       "id": 2,
-      "content": "团购 APP",
+      "name": "团购 APP",
       "personId": 2,
       "organization": "团购组",
       "created": 1604989757139
     },
     {
       "id": 3,
-      "content": "物料管理系统",
+      "name": "物料管理系统",
       "personId": 2,
       "organization": "物料组",
       "created": 1546300800000
     },
     {
       "id": 4,
-      "content": "总部管理系统",
+      "name": "总部管理系统",
       "personId": 3,
       "organization": "总部",
       "created": 1604980000011
     },
     {
       "id": 5,
-      "content": "送餐路线规划系统",
+      "name": "送餐路线规划系统",
       "personId": 4,
       "organization": "外卖组",
       "created": 1546900800000

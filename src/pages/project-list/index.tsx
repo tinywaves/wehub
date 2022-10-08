@@ -5,35 +5,28 @@ import SearchPanel from './search-panel';
 import ListTable from './list-table';
 
 import { cleanObject } from '../../utils';
-import { useMount, useDebounce } from '../../hooks';
+import { useMount, useDebounce, useHttp } from '../../hooks';
 
 const url = process.env.REACT_APP_API_URL;
 
 const ProjectListPage: React.FC = () => {
   const [searchParam, setSearchParam] = useState({
-    content: '',
+    name: '',
     personId: ''
   });
   const debouncedSearchParam = useDebounce(searchParam, 200);
   const [searchedList, setSearchedList] = useState([]);
   const [users, setUsers] = useState([]);
+  const client = useHttp();
 
   useEffect(() => {
-    const param = QueryString.stringify(cleanObject(debouncedSearchParam));
-
-    fetch(`${url}/projects?${param}`).then(async response => {
-      if (response.ok) {
-        setSearchedList(await response.json());
-      }
-    });
+    client('projects', { data: cleanObject(debouncedSearchParam) }).then(
+      setSearchedList
+    );
   }, [debouncedSearchParam]);
 
   useMount(() => {
-    fetch(`${url}/users`).then(async response => {
-      if (response.ok) {
-        setUsers(await response.json());
-      }
-    });
+    client('users').then(setUsers);
   });
 
   return (

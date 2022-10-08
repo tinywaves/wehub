@@ -1,6 +1,6 @@
 import React, { FormEvent } from 'react';
 
-import { useAuth } from '../hooks';
+import { useAuth } from '../../hooks';
 
 const Login: React.FC = () => {
   const { login } = useAuth();
