@@ -4,17 +4,7 @@ const url = process.env.REACT_APP_API_URL;
 
 const Login: React.FC = () => {
   const login = (param: { username: string; password: string }) => {
-    fetch(`${url}/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(param)
-    }).then(async response => {
-      if (response.ok) {
-        console.log('');
-      }
-    });
+    
   };
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
