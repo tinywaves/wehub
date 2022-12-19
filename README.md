@@ -73,8 +73,8 @@ Add a configuration to `tsconfig.json`:
 
 Normalize your submission information.
 
-https://github.com/conventional-changelog/commitlint
-https://github.com/conventional-changelog/commitlint/blob/master/@commitlint/config-conventional
+- https://github.com/conventional-changelog/commitlint
+- https://github.com/conventional-changelog/commitlint/blob/master/@commitlint/config-conventional
 
 #### (1) install
 
