@@ -1,14 +1,26 @@
 import React from 'react';
+import logo from './logo.svg';
+import './App.css';
 
-import { useAuth } from './hooks';
-
-import AuthenticatedApp from './pages/authenticated-app';
-import UnauthenticatedApp from './pages/unauthenticated-app';
-
-const App: React.FC = () => {
-  const { user } = useAuth();
-
-  return <>{user ? <AuthenticatedApp /> : <UnauthenticatedApp />}</>;
-};
+function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.tsx</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
+  );
+}
 
 export default App;

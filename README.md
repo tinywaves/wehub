@@ -1,109 +1,46 @@
-# jira-imitation
+# Getting Started with Create React App
 
-React18+Hook+TS4 best practices, imitating Jira enterprise-level projects.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## install jira-dev-tool
+## Available Scripts
 
-jira-dev-tool: https://www.npmjs.com/package/jira-dev-tool
+In the project directory, you can run:
 
-### step 1
+### `yarn start`
 
-```shell
-yarn add jira-dev-tool@latest
-```
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-### step 2
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
-```shell
-npx msw init public
-```
+### `yarn test`
 
-## JSON Server
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-You can use JSON Server for data simulation.
+### `yarn build`
 
-To learn more, check out the [JSON Server GitHub homepage](https://github.com/typicode/json-server).
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-## JSON Web Tokens - JWT
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-To learn more, check out the [JSON Web Tokens official website](https://jwt.io/).
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-## optional settings
+### `yarn eject`
 
-### 1. prettier
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-Prettier is an opinionated code formatter.
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-#### (1) install
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-First, install Prettier locally:
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-```shell
-yarn add --dev --exact prettier
-```
+## Learn More
 
-#### (2) .prettierrc.json
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-Then, create an empty config file to let editors and other tools know you are using Prettier:
-
-```shell
-echo {}> .prettierrc.json
-```
-
-#### (3) .prettierignore
-
-Next, create a .prettierignore file to let the Prettier CLI and editors know which files to not format. Here’s an example:
-
-```
-# Ignore artifacts:
-build
-coverage
-```
-
-#### (4) start format your codes
-
-Now, format all files with Prettier:
-
-```shell
-yarn prettier --write .
-```
-
-While the above commands need to be executed manually, we can use a tool to implement automatic formatting.
-
-You can use Prettier with a pre-commit tool. This can re-format your files that are marked as “staged” via git add before you commit.
-
-```shell
-npx mrm@2 lint-staged
-```
-
-#### (5) resolve the conflict between eslint and prettier
-
-```shell
-yarn add --dev eslint-config-prettier
-```
-
-After the installation is complete, change your package.json file.
-
-```json
-...
-"eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-      "prettier"
-    ]
-  },
-...
-```
-
-#### (6) reference
-
-- https://prettier.io/docs/en/install.html
-- https://prettier.io/docs/en/precommit.html
-- https://prettier.io/docs/en/install.html#eslint-and-other-linters
-
-### 2. commitlint
-
-Normalize your submission information.
-
-https://github.com/conventional-changelog/commitlint
+To learn React, check out the [React documentation](https://reactjs.org/).
