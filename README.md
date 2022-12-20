@@ -2,6 +2,22 @@
 
 React18 + Hooks + TS4 best practices, imitating Jira enterprise-level projects.
 
+## install jira-dev-tool
+
+jira-dev-tool: https://www.npmjs.com/package/jira-dev-tool
+
+### step1
+
+```shell
+yarn add jira-dev-tool@latest
+```
+
+### step2
+
+```shell
+npx msw init public
+```
+
 ## JSON Server
 
 You can use JSON Server for data simulation.
