@@ -4,7 +4,7 @@ import QueryString from 'qs';
 import ListTable from './project-list-table';
 import SearchPanel from './search-panel';
 
-import { useMount,useDebounce } from 'hooks';
+import { useMount, useDebounce, useHttp } from 'hooks';
 import { cleanEmptyPropertyInObject } from 'utils';
 
 const url = process.env.REACT_APP_API_URL;
@@ -15,28 +15,20 @@ const ProjectListPage = () => {
     personId: ''
   });
 
-  const debouncedSearchParam=useDebounce(searchParam,5000)
+  const debouncedSearchParam = useDebounce(searchParam, 5000);
   const [list, setList] = useState([]);
   const [users, setUsers] = useState([]);
 
+  const client = useHttp();
+
   useEffect(() => {
-    fetch(
-      `${url}/projects?${QueryString.stringify(
-        cleanEmptyPropertyInObject(debouncedSearchParam)
-      )}`
-    ).then(async response => {
-      if (response.ok) {
-        setList(await response.json());
-      }
-    });
+    client('/projects', {
+      requestData: cleanEmptyPropertyInObject(searchParam)
+    }).then(setList);
   }, [debouncedSearchParam]);
 
   useMount(() => {
-    fetch(`${url}/users`).then(async response => {
-      if (response.ok) {
-        setUsers(await response.json());
-      }
-    });
+    client('/users').then(setUsers);
   });
   return (
     <div>
