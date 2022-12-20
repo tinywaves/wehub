@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { SearchPanelProps } from './interface';
 
-const SearchPanel = ({searchParam,setSearchParam,users}) => {
-  
-  
-  
+const SearchPanel = ({
+  searchParam,
+  setSearchParam,
+  users
+}: SearchPanelProps) => {
   return (
     <form>
       <div>
@@ -22,7 +23,9 @@ const SearchPanel = ({searchParam,setSearchParam,users}) => {
         >
           <option value={''}>负责人</option>
           {users.map(user => (
-            <option value={user.id} key={user.id}>{user.name}</option>
+            <option value={user.id} key={user.id}>
+              {user.name}
+            </option>
           ))}
         </select>
       </div>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import QueryString from 'qs';
 
-import ListTable from './list-table';
+import ListTable from './project-list-table';
 import SearchPanel from './search-panel';
 
 import { useMount,useDebounce } from 'hooks';
@@ -45,7 +45,7 @@ const ProjectListPage = () => {
         setSearchParam={setSearchParam}
         users={users}
       />
-      <ListTable list={list} users={users} />
+      <ListTable projectList={list} users={users} />
     </div>
   );
 };
