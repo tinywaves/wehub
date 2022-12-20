@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { loadDevTools } from 'jira-dev-tool';
+
+import AppProviders from 'context';
+
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -12,7 +15,9 @@ const root = ReactDOM.createRoot(
 loadDevTools(() =>
   root.render(
     <React.StrictMode>
-      <App />
+      <AppProviders>
+        <App />
+      </AppProviders>
     </React.StrictMode>
   )
 );

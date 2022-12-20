@@ -2,9 +2,12 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import ProjectListPage from './pages/project-list';
-import LoginPage from 'pages/login';
+import { useAuth } from 'hooks';
+import AuthenticatedApp from 'pages/authenticated-app';
+import UnauthenticatedApp from 'pages/unauthenticated-app';
 
 function App() {
+  const { user}=useAuth()
   return (
     <div className="App">
       {/* <header className="App-header">
@@ -22,7 +25,8 @@ function App() {
         </a>
       </header> */}
       {/* <ProjectListPage /> */}
-      <LoginPage />
+      {/* <LoginPage /> */}
+      {user? <AuthenticatedApp />:<UnauthenticatedApp />}
     </div>
   );
 }
