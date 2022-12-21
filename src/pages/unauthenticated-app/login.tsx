@@ -1,33 +1,54 @@
-import { useAuth } from 'hooks';
-import { FormEvent } from 'react';
+import { TextInput, PasswordInput, Group, Button } from '@mantine/core';
 
-const url = process.env.REACT_APP_API_URL;
+import { Form } from './styles';
+
+import { useForm } from '@mantine/form';
+import { useAuth } from 'hooks';
 
 const Login = () => {
-  const { login, user } = useAuth();
+  const { login } = useAuth();
+  const form = useForm({
+    initialValues: {
+      username: '',
+      password: ''
+    },
+    validate: {
+      username: value => (value !== '' ? null : 'Please Input Username'),
+      password: value => (value !== '' ? null : 'Please Input Password')
+    }
+  });
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const username = (e.currentTarget.elements[0] as HTMLInputElement).value;
-    const password = (e.currentTarget.elements[1] as HTMLInputElement).value;
-
-    login({ username, password });
+  const handleSubmit = ({
+    username,
+    password
+  }: {
+    username: string;
+    password: string;
+  }) => {
+    login({ username, password }).catch(({ message }) => {
+      form.reset();
+      form.setErrors({ username: message, password: message });
+    });
   };
+
   return (
-    <>
-      <div>{user?.name}</div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">username</label>
-          <input type="text" id="username" />
-        </div>
-        <div>
-          <label htmlFor="password">password</label>
-          <input type="password" id="password" />
-        </div>
-        <button type="submit">login</button>
-      </form>
-    </>
+    <Form onSubmit={form.onSubmit(handleSubmit)}>
+      <TextInput
+        withAsterisk
+        label="Username"
+        placeholder="Your Username"
+        {...form.getInputProps('username')}
+      />
+      <PasswordInput
+        withAsterisk
+        label="Password"
+        placeholder="Your Password"
+        {...form.getInputProps('password')}
+      />
+      <Group position="center" grow>
+        <Button type="submit">LOGIN</Button>
+      </Group>
+    </Form>
   );
 };
 

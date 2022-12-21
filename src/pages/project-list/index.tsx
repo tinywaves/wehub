@@ -15,7 +15,7 @@ const ProjectListPage = () => {
     personId: ''
   });
 
-  const debouncedSearchParam = useDebounce(searchParam, 5000);
+  const debouncedSearchParam = useDebounce(searchParam, 200);
   const [list, setList] = useState([]);
   const [users, setUsers] = useState([]);
 
