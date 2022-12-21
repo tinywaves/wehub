@@ -1,18 +1,21 @@
 import { useState, createContext, ReactNode } from 'react';
 
-import * as auth from 'auth/auth-provider';
-import { User, AuthForm } from 'types';
-import http from 'utils/http';
 import { useMount } from 'hooks';
+import * as auth from 'auth/auth-provider';
+import { http } from 'utils';
+import { User, AuthForm } from 'types';
 
+// Init user data.
 const bootstrapUser = async () => {
   let user = null;
   const token = auth.getToken();
 
   if (token) {
     const data = await http('/me', { token });
+
     user = data.user;
   }
+
   return user;
 };
 
@@ -44,8 +47,8 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useMount(() => {
-    bootstrapUser().then(setUser)
-  })
+    bootstrapUser().then(user => setUser(user));
+  });
 
   return (
     <AuthContext.Provider
