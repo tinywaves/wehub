@@ -7,6 +7,8 @@ import SearchPanel from './search-panel';
 import { useMount, useDebounce, useHttp } from 'hooks';
 import { cleanEmptyPropertyInObject } from 'utils';
 
+import ProjectListStyles from './styles';
+
 const url = process.env.REACT_APP_API_URL;
 
 const ProjectListPage = () => {
@@ -31,14 +33,15 @@ const ProjectListPage = () => {
     client('/users').then(setUsers);
   });
   return (
-    <div>
+    <ProjectListStyles>
+      <h2>项目列表</h2>
       <SearchPanel
         searchParam={searchParam}
         setSearchParam={setSearchParam}
         users={users}
       />
       <ListTable projectList={list} users={users} />
-    </div>
+    </ProjectListStyles>
   );
 };
 

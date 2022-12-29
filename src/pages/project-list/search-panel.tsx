@@ -1,5 +1,6 @@
 import { TextInput, Select } from '@mantine/core';
 import { IconClipboardList } from '@tabler/icons';
+import { SearchPanelStyles } from './styles';
 
 import { SearchPanelProps } from './interface';
 
@@ -9,7 +10,7 @@ const SearchPanel = ({
   users
 }: SearchPanelProps) => {
   return (
-    <>
+    <SearchPanelStyles>
       <TextInput
         label="Project Name"
         placeholder="Input Project Name..."
@@ -28,7 +29,7 @@ const SearchPanel = ({
           setSearchParam({ ...searchParam, personId: value })
         }
       />
-    </>
+    </SearchPanelStyles>
   );
 };
 
