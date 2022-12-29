@@ -1,5 +1,8 @@
 // Determines whether the value passed in is null or undefined.
-const isFalsy: (value: unknown) => boolean = value => value === 0 ? false : !value;
+const isVoid: (value: unknown) => boolean = value =>
+  value === undefined ||
+  value === null ||
+  value === '';
 
 // Clears properties that have no value in the object.
 const cleanEmptyPropertyInObject = (object?: { [key: string]: unknown; }) => {
@@ -12,7 +15,7 @@ const cleanEmptyPropertyInObject = (object?: { [key: string]: unknown; }) => {
   Object.keys(object).forEach(key => {
     const value = object[key];
 
-    if (isFalsy(value)) {
+    if (isVoid(value)) {
       delete result[key];
     }
   });
