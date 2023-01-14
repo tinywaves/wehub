@@ -1,5 +1,6 @@
 import AuthenticatedApp from 'pages/authenticated-app';
 import UnauthenticatedApp from 'pages/unauthenticated-app';
+import { ErrorBoundaries, FullPageErrorFeedback } from 'components';
 
 import { useAuth } from 'hooks';
 
@@ -9,7 +10,9 @@ function App() {
   const { user } = useAuth();
   return (
     <div className="app">
-      {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
+      <ErrorBoundaries fallbackRender={FullPageErrorFeedback}>
+        {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
+      </ErrorBoundaries>
     </div>
   );
 }
