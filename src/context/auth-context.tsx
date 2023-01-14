@@ -1,6 +1,8 @@
-import { useState, createContext, ReactNode } from 'react';
+import { createContext, ReactNode } from 'react';
 
-import { useMount } from 'hooks';
+import { FullPageLoading, FullPageErrorFeedback } from 'components';
+
+import { useMount, useAsync } from 'hooks';
 import * as auth from 'auth/auth-provider';
 import { http } from 'utils';
 import { User, AuthForm } from 'types';
@@ -32,7 +34,15 @@ export const AuthContext = createContext<
 AuthContext.displayName = 'AuthContext';
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const {
+    data: user,
+    setData: setUser,
+    run,
+    isIdle,
+    isLoading,
+    isError,
+    error
+  } = useAsync<User | null>();
 
   const login = (formData: AuthForm) => {
     return auth.login(formData).then(user => setUser(user));
@@ -46,9 +56,15 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     return auth.logout().then(() => setUser(null));
   };
 
-  useMount(() => {
-    bootstrapUser().then(user => setUser(user));
-  });
+  useMount(() => run(bootstrapUser()));
+
+  if (isIdle || isLoading) {
+    return <FullPageLoading />;
+  }
+
+  if (isError) {
+    return <FullPageErrorFeedback error={error} />;
+  }
 
   return (
     <AuthContext.Provider

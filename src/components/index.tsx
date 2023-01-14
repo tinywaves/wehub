@@ -1,3 +1,5 @@
 import Row from './Row';
+import FullPageLoading from './FullPageLoading';
+import FullPageErrorFeedback from './FullPageErrorFeedback';
 
-export { Row };
+export { Row, FullPageLoading, FullPageErrorFeedback };
