@@ -1,12 +1,4 @@
-import User from 'types/user';
-
-interface Project {
-  id: string;
-  name: string;
-  personId: string;
-  organization: string;
-  created: string;
-}
+import { User, Project } from 'types';
 
 interface SearchPanelProps {
   users: User[],
