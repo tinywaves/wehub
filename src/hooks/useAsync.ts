@@ -7,18 +7,31 @@ interface AsyncState<V> {
   status: 'idle' | 'loading' | 'error' | 'success';
 }
 
+// Async-config interface.
+interface AsyncConfig {
+  throwError: boolean;
+}
+
 const defaultInitialState: AsyncState<null> = {
   data: null,
   error: null,
   status: 'idle'
 };
 
+const defaultInitialConfig: AsyncConfig = {
+  throwError: false
+};
+
 // A hook to control async actions.
-const useAsync = <V>(initialState?: AsyncState<V>) => {
+const useAsync = <V>(initialState?: AsyncState<V>, initialCOnfig?: AsyncConfig) => {
   const [state, setState] = useState<AsyncState<V>>({
     ...defaultInitialState,
     ...initialState
   });
+  const config = {
+    ...defaultInitialConfig,
+    ...initialCOnfig
+  };
 
   const setData = (data: V) => setState({
     data,
@@ -46,6 +59,11 @@ const useAsync = <V>(initialState?: AsyncState<V>) => {
       })
       .catch(error => {
         setError(error);
+
+        if (config.throwError) {
+          return Promise.reject(error);
+        }
+
         return error;
       });
   };

@@ -14,11 +14,9 @@ const root = ReactDOM.createRoot(
 
 loadDevTools(() =>
   root.render(
-    <React.StrictMode>
-      <AppProviders>
-        <App />
-      </AppProviders>
-    </React.StrictMode>
+    <AppProviders>
+      <App />
+    </AppProviders>
   )
 );
 

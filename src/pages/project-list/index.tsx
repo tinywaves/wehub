@@ -19,6 +19,7 @@ const ProjectListPage = () => {
 
   return (
     <ProjectListStyles>
+      {/* isError的更新是异步，因此只能和纯异步的代码一起使用，不能和同步代码混用，所以以下的使用是正确的 */}
       {isError && (
         <Notification icon={<IconX size={18} />} color="red">
           Get project list meeting error!
