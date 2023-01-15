@@ -6,6 +6,7 @@ import useHttp from './useHttp';
 import useAsync from './useAsync';
 import useProjects from './useProjects';
 import useUsers from './useUsers';
+import useDocumentTitle from './useDocumentTitle';
 
 export {
   useMount,
@@ -15,5 +16,6 @@ export {
   useHttp,
   useAsync,
   useProjects,
-  useUsers
+  useUsers,
+  useDocumentTitle
 };

@@ -6,8 +6,11 @@ import Register from './register';
 import UnAuthenticatedAppStyles, { Background } from './styles';
 import { Header, Container, SwitchButton, Title } from './styles';
 
+import { useDocumentTitle } from 'hooks';
+
 const UnauthenticatedApp = () => {
   const [isRegister, setIsRegister] = useState(false);
+  useDocumentTitle('Please login or register...', false);
 
   return (
     <UnAuthenticatedAppStyles>

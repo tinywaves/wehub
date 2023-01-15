@@ -6,7 +6,7 @@ import ListTable from './project-list-table';
 import SearchPanel from './search-panel';
 import ProjectListStyles from './styles';
 
-import { useDebounce, useProjects, useUsers } from 'hooks';
+import { useDebounce, useDocumentTitle, useProjects, useUsers } from 'hooks';
 
 const ProjectListPage = () => {
   const [searchParam, setSearchParam] = useState({
@@ -16,6 +16,7 @@ const ProjectListPage = () => {
   const debouncedSearchParam = useDebounce(searchParam, 200);
   const { isLoading, isError, data: list } = useProjects(debouncedSearchParam);
   const { data: users } = useUsers();
+  useDocumentTitle('Project List', false);
 
   return (
     <ProjectListStyles>
