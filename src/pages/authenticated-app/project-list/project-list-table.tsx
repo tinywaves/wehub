@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { Link } from 'react-router-dom';
 
 import { Table } from '@mantine/core';
 
@@ -18,7 +19,9 @@ const ProjectListTable = ({ projectList, users }: ProjectListTableProps) => {
       <tbody>
         {projectList.map(project => (
           <tr key={project.id}>
-            <td>{project.name}</td>
+            <td>
+              <Link to={String(project.id)}>{project.name}</Link>
+            </td>
             <td>{project.organization}</td>
             <td>
               {users.find(user => user.id === project.personId)?.name || 'NULL'}
