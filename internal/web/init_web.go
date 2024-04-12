@@ -7,9 +7,10 @@ import (
 
 func InitWeb() *gin.Engine {
 	server := gin.Default()
+	mainRouter := server.Group("/v1/api")
 
 	userHandler := &user.Handler{}
-	userHandler.RegisterRoutes(server)
+	userHandler.RegisterRoutes(mainRouter)
 
 	return server
 }

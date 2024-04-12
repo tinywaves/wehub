@@ -4,8 +4,8 @@ import "github.com/gin-gonic/gin"
 
 type Handler struct{}
 
-func (u *Handler) RegisterRoutes(server *gin.Engine) {
-	routerGroup := server.Group("/v1/api/user")
+func (u *Handler) RegisterRoutes(mainRouter *gin.RouterGroup) {
+	routerGroup := mainRouter.Group("/user")
 	routerGroup.POST("/sign-up", u.SignUp)
 	routerGroup.POST("/sign-in", u.SignIn)
 	routerGroup.PUT("/:userId", u.EditUser)
