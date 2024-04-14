@@ -12,7 +12,19 @@ import (
 	"wehub/internal/service"
 )
 
-func InitWeb() *gin.Engine {
+func InitDb() *gorm.DB {
+	db, err := gorm.Open(mysql.Open("root:root@tcp(localhost:13306)/wehub"))
+	if err != nil {
+		panic(err)
+	}
+	err = dao.InitTables(db)
+	if err != nil {
+		panic(err)
+	}
+	return db
+}
+
+func InitServer() *gin.Engine {
 	server := gin.Default()
 	server.Use(cors.New(cors.Config{
 		AllowHeaders:     []string{"Content-Type", "Authorization"},
@@ -22,21 +34,17 @@ func InitWeb() *gin.Engine {
 		},
 		MaxAge: 12 * time.Hour,
 	}))
-	mainRouter := server.Group("/v1/api")
+	return server
+}
 
-	db, err := gorm.Open(mysql.Open("root:root@tcp(localhost:13306)/wehub"))
-	if err != nil {
-		panic(err)
-	}
-	err = dao.InitTables(db)
-	if err != nil {
-		panic(err)
-	}
+func initUser(mainRouter *gin.RouterGroup, db *gorm.DB) {
 	userDao := dao.InitUserDao(db)
 	userRepository := repository.InitUserRepository(userDao)
 	userService := service.InitUserService(userRepository)
 	userHandler := InitUserHandler(userService)
 	userHandler.RegisterRoutes(mainRouter)
+}
 
-	return server
+func InitModules(mainRouter *gin.RouterGroup, db *gorm.DB) {
+	initUser(mainRouter, db)
 }
