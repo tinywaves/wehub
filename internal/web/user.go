@@ -1,6 +1,7 @@
 package web
 
 import (
+	"errors"
 	regexp "github.com/dlclark/regexp2"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -66,6 +67,10 @@ func (u *UserHandler) SignUp(ctx *gin.Context) {
 
 	err := u.svc.SignUp(ctx, domain.User{Email: req.Email, Password: req.Password})
 	if err != nil {
+		if errors.Is(err, service.ErrorDuplicateEmail) {
+			ctx.String(http.StatusOK, err.Error())
+			return
+		}
 		ctx.String(http.StatusOK, "Internal Server Error")
 		return
 	}
