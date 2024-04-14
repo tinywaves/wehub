@@ -78,7 +78,23 @@ func (u *UserHandler) SignUp(ctx *gin.Context) {
 }
 
 func (u *UserHandler) SignIn(ctx *gin.Context) {
-
+	type Req struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+	var req Req
+	if err := ctx.Bind(&req); err != nil {
+		return
+	}
+	if err := u.svc.SignIn(ctx, domain.User{Email: req.Email, Password: req.Password}); err != nil {
+		if errors.Is(err, service.ErrorUserNotFound) || errors.Is(err, service.ErrorEmailPasswordNotMatched) {
+			ctx.String(http.StatusOK, err.Error())
+			return
+		}
+		ctx.String(http.StatusOK, "Internal Server Error")
+		return
+	}
+	ctx.String(http.StatusOK, "Sign in successfully")
 }
 
 func (u *UserHandler) EditUser(ctx *gin.Context) {

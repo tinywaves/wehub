@@ -8,7 +8,8 @@ import (
 )
 
 var (
-	ErrorDuplicateEmail = errors.New(`the changed email address has already been registered`)
+	ErrorDuplicateEmail = errors.New("the changed email address has already been registered")
+	ErrorUserNotFound   = gorm.ErrRecordNotFound
 )
 
 type UserDao struct {
@@ -29,6 +30,12 @@ func (ud *UserDao) Insert(ctx context.Context, um UserModel) error {
 		}
 	}
 	return err
+}
+
+func (ud *UserDao) QueryByEmail(ctx context.Context, email string) (UserModel, error) {
+	var u UserModel
+	err := ud.db.WithContext(ctx).Where("email = ?", email).First(&u).Error
+	return u, err
 }
 
 type UserModel struct {
