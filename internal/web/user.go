@@ -1,28 +1,32 @@
-package user
+package web
 
 import (
 	regexp "github.com/dlclark/regexp2"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"wehub/internal/domain"
+	"wehub/internal/service"
 )
 
-type Handler struct {
+type UserHandler struct {
+	svc                    *service.UserService
 	compiledEmailRegexp    *regexp.Regexp
 	compiledPasswordRegexp *regexp.Regexp
 }
 
-func InitHandler() *Handler {
+func InitUserHandler(svc *service.UserService) *UserHandler {
 	const (
 		emailRegexpPattern    = `^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$`
 		passwordRegexpPattern = `^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$`
 	)
-	return &Handler{
+	return &UserHandler{
+		svc:                    svc,
 		compiledEmailRegexp:    regexp.MustCompile(emailRegexpPattern, regexp.None),
 		compiledPasswordRegexp: regexp.MustCompile(passwordRegexpPattern, regexp.None),
 	}
 }
 
-func (u *Handler) RegisterRoutes(mainRouter *gin.RouterGroup) {
+func (u *UserHandler) RegisterRoutes(mainRouter *gin.RouterGroup) {
 	routerGroup := mainRouter.Group("/user")
 	routerGroup.POST("/sign-up", u.SignUp)
 	routerGroup.POST("/sign-in", u.SignIn)
@@ -30,7 +34,7 @@ func (u *Handler) RegisterRoutes(mainRouter *gin.RouterGroup) {
 	routerGroup.GET("/:userId", u.GetUser)
 }
 
-func (u *Handler) SignUp(ctx *gin.Context) {
+func (u *UserHandler) SignUp(ctx *gin.Context) {
 	type Req struct {
 		Email             string `json:"email"`
 		Password          string `json:"password"`
@@ -59,17 +63,23 @@ func (u *Handler) SignUp(ctx *gin.Context) {
 		ctx.String(http.StatusOK, "Invalid password, please check your password again")
 		return
 	}
+
+	err := u.svc.SignUp(ctx, domain.User{Email: req.Email, Password: req.Password})
+	if err != nil {
+		ctx.String(http.StatusOK, "Internal Server Error")
+		return
+	}
 	ctx.String(http.StatusOK, "Sign up successfully")
 }
 
-func (u *Handler) SignIn(ctx *gin.Context) {
+func (u *UserHandler) SignIn(ctx *gin.Context) {
 
 }
 
-func (u *Handler) EditUser(ctx *gin.Context) {
+func (u *UserHandler) EditUser(ctx *gin.Context) {
 
 }
 
-func (u *Handler) GetUser(ctx *gin.Context) {
+func (u *UserHandler) GetUser(ctx *gin.Context) {
 
 }
