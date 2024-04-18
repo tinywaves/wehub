@@ -15,7 +15,10 @@ func InitAuthMiddleBuilder() *AuthMiddleBuilder {
 func (a *AuthMiddleBuilder) Build() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		skip := func() bool {
-			noNeedToCheckRequestUrls := []string{"/sign-up", "/sign-in"}
+			noNeedToCheckRequestUrls := []string{
+				"/v1/api/user/sign-up",
+				"/v1/api/user/sign-in",
+			}
 			for _, url := range noNeedToCheckRequestUrls {
 				if ctx.Request.URL.Path == url {
 					return true
