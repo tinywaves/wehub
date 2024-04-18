@@ -3,6 +3,7 @@ package web
 import (
 	"errors"
 	regexp "github.com/dlclark/regexp2"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"wehub/internal/domain"
@@ -86,11 +87,19 @@ func (u *UserHandler) SignIn(ctx *gin.Context) {
 	if err := ctx.Bind(&req); err != nil {
 		return
 	}
-	if err := u.svc.SignIn(ctx, domain.User{Email: req.Email, Password: req.Password}); err != nil {
+	user, err := u.svc.SignIn(ctx, domain.User{Email: req.Email, Password: req.Password})
+	if err != nil {
 		if errors.Is(err, service.ErrorUserNotFound) || errors.Is(err, service.ErrorEmailPasswordNotMatched) {
 			ctx.String(http.StatusOK, err.Error())
 			return
 		}
+		ctx.String(http.StatusOK, "Internal Server Error")
+		return
+	}
+	session := sessions.Default(ctx)
+	session.Set("user_id", user.Id)
+	err = session.Save()
+	if err != nil {
 		ctx.String(http.StatusOK, "Internal Server Error")
 		return
 	}

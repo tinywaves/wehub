@@ -31,13 +31,13 @@ func (s *UserService) SignUp(ctx context.Context, u domain.User) error {
 	return s.repo.Create(ctx, u)
 }
 
-func (s *UserService) SignIn(ctx context.Context, u domain.User) error {
+func (s *UserService) SignIn(ctx context.Context, u domain.User) (domain.User, error) {
 	user, err := s.repo.FindByEmail(ctx, u.Email)
 	if err != nil {
-		return err
+		return domain.User{}, err
 	}
 	if err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(u.Password)); err != nil {
-		return ErrorEmailPasswordNotMatched
+		return domain.User{}, ErrorEmailPasswordNotMatched
 	}
-	return nil
+	return user, nil
 }

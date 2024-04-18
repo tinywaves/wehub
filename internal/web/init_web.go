@@ -2,6 +2,8 @@ package web
 
 import (
 	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -26,6 +28,7 @@ func InitDb() *gorm.DB {
 
 func InitServer() *gin.Engine {
 	server := gin.Default()
+	// cors
 	server.Use(cors.New(cors.Config{
 		AllowHeaders:     []string{"Content-Type", "Authorization"},
 		AllowCredentials: true,
@@ -34,6 +37,9 @@ func InitServer() *gin.Engine {
 		},
 		MaxAge: 12 * time.Hour,
 	}))
+	// session
+	store := cookie.NewStore([]byte("secret"))
+	server.Use(sessions.Sessions("wehub_sid", store))
 	return server
 }
 

@@ -35,5 +35,5 @@ func (r *UserRepository) FindByEmail(ctx context.Context, email string) (domain.
 	if err != nil {
 		return domain.User{}, err
 	}
-	return domain.User{Email: userModel.Email, Password: userModel.Password}, nil
+	return domain.User{Email: userModel.Email, Password: userModel.Password, Id: userModel.Id}, nil
 }
