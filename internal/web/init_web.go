@@ -12,6 +12,7 @@ import (
 	"wehub/internal/repository"
 	"wehub/internal/repository/dao"
 	"wehub/internal/service"
+	"wehub/internal/web/middlewares"
 )
 
 func InitDb() *gorm.DB {
@@ -28,7 +29,7 @@ func InitDb() *gorm.DB {
 
 func InitServer() *gin.Engine {
 	server := gin.Default()
-	// cors
+	// cors.
 	server.Use(cors.New(cors.Config{
 		AllowHeaders:     []string{"Content-Type", "Authorization"},
 		AllowCredentials: true,
@@ -37,9 +38,11 @@ func InitServer() *gin.Engine {
 		},
 		MaxAge: 12 * time.Hour,
 	}))
-	// session
+	// session.
 	store := cookie.NewStore([]byte("secret"))
 	server.Use(sessions.Sessions("wehub_sid", store))
+	// check login.
+	server.Use(middlewares.InitAuthMiddleBuilder().Build())
 	return server
 }
 
