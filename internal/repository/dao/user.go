@@ -39,9 +39,12 @@ func (ud *UserDao) QueryByEmail(ctx context.Context, email string) (UserModel, e
 }
 
 type UserModel struct {
-	Id         int64  `gorm:"primaryKey,autoIncrement"`
-	Email      string `gorm:"unique"`
-	Password   string
-	CreateTime int64
-	UpdateTime int64
+	Id                  int64  `gorm:"primaryKey,autoIncrement"`
+	Email               string `gorm:"unique"`
+	Password            string
+	Nickname            string
+	Birthday            string
+	PersonalDescription string
+	CreateTime          int64
+	UpdateTime          int64
 }
