@@ -41,3 +41,8 @@ func (s *UserService) SignIn(ctx context.Context, u domain.User) (domain.User, e
 	}
 	return user, nil
 }
+
+func (s *UserService) GetUser(ctx context.Context, userId string) (domain.User, error) {
+	user, err := s.repo.FindById(ctx, userId)
+	return user, err
+}

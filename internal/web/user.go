@@ -1,6 +1,7 @@
 package web
 
 import (
+	"encoding/json"
 	"errors"
 	regexp "github.com/dlclark/regexp2"
 	"github.com/gin-contrib/sessions"
@@ -107,9 +108,21 @@ func (u *UserHandler) SignIn(ctx *gin.Context) {
 }
 
 func (u *UserHandler) EditUser(ctx *gin.Context) {
+	// userId := ctx.Param("userId")
 
 }
 
 func (u *UserHandler) GetUser(ctx *gin.Context) {
-
+	userId := ctx.Param("userId")
+	user, err := u.svc.GetUser(ctx, userId)
+	if errors.Is(err, service.ErrorUserNotFound) {
+		ctx.String(http.StatusOK, err.Error())
+		return
+	}
+	marshalUser, err := json.Marshal(user)
+	if err != nil {
+		ctx.String(http.StatusOK, "Internal Server Error")
+		return
+	}
+	ctx.String(http.StatusOK, string(marshalUser))
 }

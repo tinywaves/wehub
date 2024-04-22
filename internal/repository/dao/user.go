@@ -38,6 +38,12 @@ func (ud *UserDao) QueryByEmail(ctx context.Context, email string) (UserModel, e
 	return u, err
 }
 
+func (ud *UserDao) QueryById(ctx context.Context, id string) (UserModel, error) {
+	var u UserModel
+	err := ud.db.WithContext(ctx).Where("id = ?", id).First(&u).Error
+	return u, err
+}
+
 type UserModel struct {
 	Id                  int64  `gorm:"primaryKey,autoIncrement"`
 	Email               string `gorm:"unique"`
