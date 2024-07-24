@@ -13,7 +13,17 @@ func (u *UserHandler) RegisterRoutes(rootRouter *gin.RouterGroup) {
 	userRouter.GET("/:id", u.Get)
 }
 
-func (u *UserHandler) SignUp(ctx *gin.Context) {}
+func (u *UserHandler) SignUp(ctx *gin.Context) {
+	type SignUpReq struct {
+		Email             string `json:"email"`
+		Password          string `json:"password"`
+		ConfirmedPassword string `json:"confirmedPassword"`
+	}
+	var req SignUpReq
+	if err := ctx.Bind(&req); err != nil {
+		return
+	}
+}
 
 func (u *UserHandler) SignIn(ctx *gin.Context) {}
 
