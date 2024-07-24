@@ -10,8 +10,7 @@ func main() {
 	server := gin.Default()
 	rootRouter := server.Group("/v1/api")
 
-	userWeb := &web.UserHandler{}
-	userWeb.RegisterRoutes(rootRouter)
+	web.InitUser(rootRouter)
 
 	err := server.Run(":8080")
 	if err != nil {

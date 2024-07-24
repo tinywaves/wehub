@@ -1,9 +1,27 @@
 package web
 
-import "github.com/gin-gonic/gin"
+import (
+	regexp "github.com/dlclark/regexp2"
+	"github.com/gin-gonic/gin"
+	"net/http"
+)
 
 // UserHandler Use to handle user related routes
-type UserHandler struct{}
+type UserHandler struct {
+	compiledEmailRegexpPattern    *regexp.Regexp
+	compiledPasswordRegexpPattern *regexp.Regexp
+}
+
+func InitUserHandler() *UserHandler {
+	const (
+		emailRegexpPattern    = `^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$`
+		passwordRegexpPattern = `^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$`
+	)
+	return &UserHandler{
+		compiledEmailRegexpPattern:    regexp.MustCompile(emailRegexpPattern, regexp.None),
+		compiledPasswordRegexpPattern: regexp.MustCompile(passwordRegexpPattern, regexp.None),
+	}
+}
 
 func (u *UserHandler) RegisterRoutes(rootRouter *gin.RouterGroup) {
 	userRouter := rootRouter.Group("/user")
@@ -22,6 +40,27 @@ func (u *UserHandler) SignUp(ctx *gin.Context) {
 	var req SignUpReq
 	if err := ctx.Bind(&req); err != nil {
 		return
+	}
+
+	if req.Password != req.ConfirmedPassword {
+		ctx.String(http.StatusOK, "Your password and confirmed password do not match")
+		return
+	}
+	matched, err := u.compiledEmailRegexpPattern.MatchString(req.Email)
+	if err != nil {
+		ctx.String(http.StatusOK, "System error")
+		return
+	}
+	if !matched {
+		ctx.String(http.StatusOK, "Your email address is not valid")
+	}
+	matched, err = u.compiledPasswordRegexpPattern.MatchString(req.Password)
+	if err != nil {
+		ctx.String(http.StatusOK, "System error")
+		return
+	}
+	if !matched {
+		ctx.String(http.StatusOK, "Your password is not valid")
 	}
 }
 

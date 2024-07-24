@@ -2,7 +2,10 @@ module wehub
 
 go 1.22.5
 
-require github.com/gin-gonic/gin v1.10.0
+require (
+	github.com/dlclark/regexp2 v1.11.2
+	github.com/gin-gonic/gin v1.10.0
+)
 
 require (
 	github.com/bytedance/sonic v1.11.9 // indirect
