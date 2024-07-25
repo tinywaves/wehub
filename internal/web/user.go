@@ -1,6 +1,7 @@
 package web
 
 import (
+	"errors"
 	regexp "github.com/dlclark/regexp2"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -70,11 +71,16 @@ func (handler *UserHandler) SignUp(ctx *gin.Context) {
 	}
 
 	if err := handler.userService.SignUp(ctx, domain.User{Email: req.Email, Password: req.Password}); err != nil {
+		if errors.Is(err, service.ErrorUserEmailDuplicated) {
+			ctx.String(http.StatusOK, "Your email address has been used")
+			return
+		}
 		ctx.String(http.StatusOK, "System error")
 		return
 	}
 
 	ctx.String(http.StatusOK, "SignUp successfully")
+	return
 }
 
 func (handler *UserHandler) SignIn(ctx *gin.Context) {}

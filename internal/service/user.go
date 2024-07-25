@@ -7,6 +7,8 @@ import (
 	"wehub/internal/repository"
 )
 
+var ErrorUserEmailDuplicated = repository.ErrorUserEmailDuplicated
+
 type UserService struct {
 	userRepository *repository.UserRepository
 }

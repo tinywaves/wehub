@@ -7,6 +7,8 @@ import (
 	"wehub/internal/repository/dao"
 )
 
+var ErrorUserEmailDuplicated = dao.ErrorUserEmailDuplicated
+
 type UserRepository struct {
 	userDao *dao.UserDao
 }

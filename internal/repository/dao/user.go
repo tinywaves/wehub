@@ -2,8 +2,12 @@ package dao
 
 import (
 	"context"
+	"errors"
+	"github.com/go-sql-driver/mysql"
 	"gorm.io/gorm"
 )
+
+var ErrorUserEmailDuplicated = errors.New("ErrorUserEmailDuplicated")
 
 type UserDao struct {
 	db *gorm.DB
@@ -23,5 +27,12 @@ type User struct {
 }
 
 func (dao *UserDao) Insert(ctx context.Context, user User) error {
-	return dao.db.WithContext(ctx).Create(&user).Error
+	err := dao.db.WithContext(ctx).Create(&user).Error
+	var mysqlErr *mysql.MySQLError
+	if errors.As(err, &mysqlErr) {
+		if mysqlErr.Number == 1062 {
+			return ErrorUserEmailDuplicated
+		}
+	}
+	return nil
 }
