@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+	db := web.InitDb()
 	server := gin.Default()
 	server.Use(cors.New(cors.Config{
 		AllowHeaders:     []string{"Content-Type"},
@@ -24,7 +25,7 @@ func main() {
 	}))
 
 	rootRouter := server.Group("/v1/api")
-	web.InitUser(rootRouter)
+	web.InitUser(rootRouter, db)
 
 	err := server.Run(":8080")
 	if err != nil {
