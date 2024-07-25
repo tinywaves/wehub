@@ -28,7 +28,13 @@ func main() {
 	}))
 	store := cookie.NewStore([]byte("wehub_custom_secret"))
 	server.Use(sessions.Sessions("wehub_ssid", store))
-	server.Use(middleware.InitSignInCheckMiddlewareBuilder().Build())
+	server.Use(
+		middleware.
+			InitSignInCheckMiddlewareBuilder().
+			IgnorePath("/v1/api/user/sign-up").
+			IgnorePath("/v1/api/user/sign-in").
+			Build(),
+	)
 
 	rootRouter := server.Group("/v1/api")
 	web.InitUser(rootRouter, db)

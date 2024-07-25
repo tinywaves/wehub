@@ -6,17 +6,25 @@ import (
 	"net/http"
 )
 
-type SignInCheckMiddlewareBuilder struct{}
+type SignInCheckMiddlewareBuilder struct {
+	ignorePaths []string
+}
 
 func InitSignInCheckMiddlewareBuilder() *SignInCheckMiddlewareBuilder {
 	return &SignInCheckMiddlewareBuilder{}
 }
 
+func (s *SignInCheckMiddlewareBuilder) IgnorePath(path string) *SignInCheckMiddlewareBuilder {
+	s.ignorePaths = append(s.ignorePaths, path)
+	return s
+}
+
 func (s *SignInCheckMiddlewareBuilder) Build() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		if ctx.Request.URL.Path == "/v1/api/user/sign-up" ||
-			ctx.Request.URL.Path == "/v1/api/user/sign-in" {
-			return
+		for _, path := range s.ignorePaths {
+			if ctx.Request.URL.Path == path {
+				return
+			}
 		}
 		session := sessions.Default(ctx)
 		if session == nil {
