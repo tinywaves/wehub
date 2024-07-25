@@ -2,12 +2,17 @@ package service
 
 import (
 	"context"
+	"errors"
 	"golang.org/x/crypto/bcrypt"
 	"wehub/internal/domain"
 	"wehub/internal/repository"
 )
 
-var ErrorUserEmailDuplicated = repository.ErrorUserEmailDuplicated
+var (
+	ErrorUserEmailDuplicated   = repository.ErrorUserEmailDuplicated
+	ErrorUserNotFound          = repository.ErrorUserNotFound
+	ErrorEmailPasswordNotMatch = errors.New("ErrorEmailPasswordNotMatch")
+)
 
 type UserService struct {
 	userRepository *repository.UserRepository
@@ -24,4 +29,15 @@ func (service *UserService) SignUp(ctx context.Context, user domain.User) error 
 	}
 	user.Password = string(encryptedPassword)
 	return service.userRepository.CreateUser(ctx, user)
+}
+
+func (service *UserService) SignIn(ctx context.Context, user domain.User) error {
+	foundUser, err := service.userRepository.FindByEmail(ctx, user.Email)
+	if err != nil {
+		return err
+	}
+	if err = bcrypt.CompareHashAndPassword([]byte(foundUser.Password), []byte(user.Password)); err != nil {
+		return ErrorEmailPasswordNotMatch
+	}
+	return nil
 }

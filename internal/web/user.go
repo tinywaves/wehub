@@ -83,7 +83,32 @@ func (handler *UserHandler) SignUp(ctx *gin.Context) {
 	return
 }
 
-func (handler *UserHandler) SignIn(ctx *gin.Context) {}
+func (handler *UserHandler) SignIn(ctx *gin.Context) {
+	type SignInReq struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+	var req SignInReq
+	if err := ctx.Bind(&req); err != nil {
+		return
+	}
+
+	if err := handler.userService.SignIn(ctx, domain.User{Email: req.Email, Password: req.Password}); err != nil {
+		if errors.Is(err, service.ErrorUserNotFound) {
+			ctx.String(http.StatusOK, "Your email address is not registered")
+			return
+		}
+		if errors.Is(err, service.ErrorEmailPasswordNotMatch) {
+			ctx.String(http.StatusOK, "Your email address and password do not match")
+			return
+		}
+		ctx.String(http.StatusOK, "System error")
+		return
+	}
+
+	ctx.String(http.StatusOK, "SignIn successfully")
+	return
+}
 
 func (handler *UserHandler) Edit(ctx *gin.Context) {}
 

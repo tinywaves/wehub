@@ -7,7 +7,10 @@ import (
 	"wehub/internal/repository/dao"
 )
 
-var ErrorUserEmailDuplicated = dao.ErrorUserEmailDuplicated
+var (
+	ErrorUserEmailDuplicated = dao.ErrorUserEmailDuplicated
+	ErrorUserNotFound        = dao.ErrorUserNotFound
+)
 
 type UserRepository struct {
 	userDao *dao.UserDao
@@ -28,4 +31,12 @@ func (repository *UserRepository) CreateUser(ctx context.Context, user domain.Us
 			UpdatedTime: now,
 		},
 	)
+}
+
+func (repository *UserRepository) FindByEmail(ctx context.Context, email string) (domain.User, error) {
+	user, err := repository.userDao.QueryByEmail(ctx, email)
+	if err != nil {
+		return domain.User{}, err
+	}
+	return domain.User{Email: user.Email, Password: user.Password}, nil
 }
