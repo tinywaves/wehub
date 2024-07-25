@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 	"wehub/internal/web"
+	"wehub/internal/web/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -27,6 +28,7 @@ func main() {
 	}))
 	store := cookie.NewStore([]byte("wehub_custom_secret"))
 	server.Use(sessions.Sessions("wehub_ssid", store))
+	server.Use(middleware.InitSignInCheckMiddlewareBuilder().Build())
 
 	rootRouter := server.Group("/v1/api")
 	web.InitUser(rootRouter, db)
