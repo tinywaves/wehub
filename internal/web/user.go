@@ -3,6 +3,7 @@ package web
 import (
 	"errors"
 	regexp "github.com/dlclark/regexp2"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"wehub/internal/domain"
@@ -93,7 +94,8 @@ func (handler *UserHandler) SignIn(ctx *gin.Context) {
 		return
 	}
 
-	if err := handler.userService.SignIn(ctx, domain.User{Email: req.Email, Password: req.Password}); err != nil {
+	user, err := handler.userService.SignIn(ctx, domain.User{Email: req.Email, Password: req.Password})
+	if err != nil {
 		if errors.Is(err, service.ErrorUserNotFound) {
 			ctx.String(http.StatusOK, "Your email address is not registered")
 			return
@@ -102,6 +104,14 @@ func (handler *UserHandler) SignIn(ctx *gin.Context) {
 			ctx.String(http.StatusOK, "Your email address and password do not match")
 			return
 		}
+		ctx.String(http.StatusOK, "System error")
+		return
+	}
+
+	session := sessions.Default(ctx)
+	session.Set("wehub_user_id", user.Id)
+	err = session.Save()
+	if err != nil {
 		ctx.String(http.StatusOK, "System error")
 		return
 	}

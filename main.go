@@ -2,6 +2,8 @@ package main
 
 import (
 	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"strings"
 	"time"
 	"wehub/internal/web"
@@ -23,6 +25,8 @@ func main() {
 		},
 		MaxAge: 12 * time.Hour,
 	}))
+	store := cookie.NewStore([]byte("wehub_custom_secret"))
+	server.Use(sessions.Sessions("wehub_ssid", store))
 
 	rootRouter := server.Group("/v1/api")
 	web.InitUser(rootRouter, db)
