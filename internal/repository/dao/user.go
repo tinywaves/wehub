@@ -21,12 +21,15 @@ func InitUserDao(db *gorm.DB) *UserDao {
 }
 
 type User struct {
-	Id          int64  `gorm:"primaryKey,autoIncrement"`
-	Email       string `gorm:"unique"`
-	Password    string
-	CreatedTime int64
-	UpdatedTime int64
-	DeletedTime int64
+	Id                  int64  `gorm:"primaryKey,autoIncrement"`
+	Email               string `gorm:"unique"`
+	Password            string
+	Nickname            string
+	Birthday            string
+	PersonalDescription string
+	CreatedTime         int64
+	UpdatedTime         int64
+	DeletedTime         int64
 }
 
 func (dao *UserDao) Insert(ctx context.Context, user User) error {
@@ -44,4 +47,9 @@ func (dao *UserDao) QueryByEmail(ctx context.Context, email string) (User, error
 	var user User
 	err := dao.db.WithContext(ctx).Where("email = ?", email).First(&user).Error
 	return user, err
+}
+
+func (dao *UserDao) ModifyByUserId(ctx context.Context, user User) error {
+	err := dao.db.WithContext(ctx).Model(&user).Updates(&user).Error
+	return err
 }

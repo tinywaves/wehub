@@ -15,17 +15,20 @@ type UserHandler struct {
 	userService                   *service.UserService
 	compiledEmailRegexpPattern    *regexp.Regexp
 	compiledPasswordRegexpPattern *regexp.Regexp
+	compiledBirthdayRegexpPattern *regexp.Regexp
 }
 
 func InitUserHandler(userService *service.UserService) *UserHandler {
 	const (
 		emailRegexpPattern    = `^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$`
 		passwordRegexpPattern = `^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$`
+		birthdayRegexpPattern = `^(19|20)\d\d\.(0[1-9]|1[012])\.(0[1-9]|[12][0-9]|3[01])$`
 	)
 	return &UserHandler{
 		userService:                   userService,
 		compiledEmailRegexpPattern:    regexp.MustCompile(emailRegexpPattern, regexp.None),
 		compiledPasswordRegexpPattern: regexp.MustCompile(passwordRegexpPattern, regexp.None),
+		compiledBirthdayRegexpPattern: regexp.MustCompile(birthdayRegexpPattern, regexp.None),
 	}
 }
 
@@ -33,7 +36,7 @@ func (handler *UserHandler) RegisterRoutes(rootRouter *gin.RouterGroup) {
 	userRouter := rootRouter.Group("/user")
 	userRouter.POST("/sign-up", handler.SignUp)
 	userRouter.POST("/sign-in", handler.SignIn)
-	userRouter.PUT("/:id", handler.Edit)
+	userRouter.PATCH("/edit", handler.Edit)
 	userRouter.GET("/:id", handler.Get)
 }
 
@@ -120,6 +123,50 @@ func (handler *UserHandler) SignIn(ctx *gin.Context) {
 	return
 }
 
-func (handler *UserHandler) Edit(ctx *gin.Context) {}
+func (handler *UserHandler) Edit(ctx *gin.Context) {
+	type EditReq struct {
+		Nickname            string `json:"nickname"`
+		Birthday            string `json:"birthday"`
+		PersonalDescription string `json:"personalDescription"`
+	}
+	var req EditReq
+	if err := ctx.Bind(&req); err != nil {
+		return
+	}
+
+	session := sessions.Default(ctx)
+	userId := session.Get("wehub_user_id")
+
+	user := domain.User{Id: userId.(int64)}
+	if req.Nickname != "" {
+		user.Nickname = req.Nickname
+	}
+	if req.Birthday != "" {
+		matched, err := handler.compiledBirthdayRegexpPattern.MatchString(req.Birthday)
+		if err != nil {
+			ctx.String(http.StatusOK, "System error")
+			return
+		}
+		if !matched {
+			ctx.String(http.StatusOK, "Your birthday format is not valid")
+			return
+		}
+		user.Birthday = req.Birthday
+	}
+	if req.PersonalDescription != "" {
+		user.PersonalDescription = req.PersonalDescription
+	}
+	if err := handler.userService.Edit(ctx, user); err != nil {
+		if errors.Is(err, service.ErrorUserNotFound) {
+			ctx.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+		ctx.String(http.StatusOK, "System error")
+		return
+	}
+
+	ctx.String(http.StatusOK, "Edit your profile successfully")
+	return
+}
 
 func (handler *UserHandler) Get(ctx *gin.Context) {}

@@ -41,3 +41,7 @@ func (service *UserService) SignIn(ctx context.Context, user domain.User) (domai
 	}
 	return foundUser, nil
 }
+
+func (service *UserService) Edit(ctx context.Context, user domain.User) error {
+	return service.userRepository.EditByUserId(ctx, user)
+}
