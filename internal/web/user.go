@@ -114,6 +114,7 @@ func (handler *UserHandler) SignIn(ctx *gin.Context) {
 
 	session := sessions.Default(ctx)
 	session.Set("wehub_user_id", user.Id)
+	session.Options(sessions.Options{MaxAge: 7 * 24 * 60 * 60})
 	err = session.Save()
 	if err != nil {
 		ctx.String(http.StatusOK, "System error")
