@@ -36,6 +36,7 @@ func (handler *UserHandler) RegisterRoutes(rootRouter *gin.RouterGroup) {
 	userRouter := rootRouter.Group("/user")
 	userRouter.POST("/sign-up", handler.SignUp)
 	userRouter.POST("/sign-in", handler.SignIn)
+	userRouter.POST("/sign-out", handler.SignOut)
 	userRouter.PATCH("", handler.Edit)
 	userRouter.GET("", handler.Get)
 }
@@ -120,6 +121,19 @@ func (handler *UserHandler) SignIn(ctx *gin.Context) {
 	}
 
 	ctx.String(http.StatusOK, "SignIn successfully")
+	return
+}
+
+func (handler *UserHandler) SignOut(ctx *gin.Context) {
+	session := sessions.Default(ctx)
+	session.Options(sessions.Options{MaxAge: -1})
+	err := session.Save()
+	if err != nil {
+		ctx.String(http.StatusOK, "System error")
+		return
+	}
+
+	ctx.String(http.StatusOK, "SignOut successfully")
 	return
 }
 
