@@ -36,8 +36,8 @@ func (handler *UserHandler) RegisterRoutes(rootRouter *gin.RouterGroup) {
 	userRouter := rootRouter.Group("/user")
 	userRouter.POST("/sign-up", handler.SignUp)
 	userRouter.POST("/sign-in", handler.SignIn)
-	userRouter.PATCH("/edit", handler.Edit)
-	userRouter.GET("/:id", handler.Get)
+	userRouter.PATCH("", handler.Edit)
+	userRouter.GET("", handler.Get)
 }
 
 func (handler *UserHandler) SignUp(ctx *gin.Context) {
@@ -156,7 +156,7 @@ func (handler *UserHandler) Edit(ctx *gin.Context) {
 	if req.PersonalDescription != "" {
 		user.PersonalDescription = req.PersonalDescription
 	}
-	if err := handler.userService.Edit(ctx, user); err != nil {
+	if err := handler.userService.EditUserInfo(ctx, user); err != nil {
 		if errors.Is(err, service.ErrorUserNotFound) {
 			ctx.AbortWithStatus(http.StatusUnauthorized)
 			return
@@ -169,4 +169,20 @@ func (handler *UserHandler) Edit(ctx *gin.Context) {
 	return
 }
 
-func (handler *UserHandler) Get(ctx *gin.Context) {}
+func (handler *UserHandler) Get(ctx *gin.Context) {
+	session := sessions.Default(ctx)
+	userId := session.Get("wehub_user_id")
+
+	user, err := handler.userService.GetUserInfo(ctx, userId.(int64))
+	if err != nil {
+		if errors.Is(err, service.ErrorUserNotFound) {
+			ctx.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+		ctx.String(http.StatusOK, "System error")
+		return
+	}
+
+	ctx.JSON(http.StatusOK, any(user))
+	return
+}

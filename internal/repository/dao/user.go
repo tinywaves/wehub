@@ -49,6 +49,12 @@ func (dao *UserDao) QueryByEmail(ctx context.Context, email string) (User, error
 	return user, err
 }
 
+func (dao *UserDao) QueryById(ctx context.Context, id int64) (User, error) {
+	var user User
+	err := dao.db.WithContext(ctx).Where("id = ?", id).First(&user).Error
+	return user, err
+}
+
 func (dao *UserDao) ModifyByUserId(ctx context.Context, user User) error {
 	err := dao.db.WithContext(ctx).Model(&user).Updates(&user).Error
 	return err

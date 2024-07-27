@@ -41,6 +41,21 @@ func (repository *UserRepository) FindByEmail(ctx context.Context, email string)
 	return domain.User{Id: user.Id, Email: user.Email, Password: user.Password}, nil
 }
 
+func (repository *UserRepository) FindById(ctx context.Context, id int64) (domain.User, error) {
+	user, err := repository.userDao.QueryById(ctx, id)
+	if err != nil {
+		return domain.User{}, err
+	}
+	return domain.User{
+		Id:                  user.Id,
+		Email:               user.Email,
+		Password:            user.Password,
+		Nickname:            user.Nickname,
+		Birthday:            user.Birthday,
+		PersonalDescription: user.PersonalDescription,
+	}, nil
+}
+
 func (repository *UserRepository) EditByUserId(ctx context.Context, user domain.User) error {
 	return repository.userDao.ModifyByUserId(
 		ctx,

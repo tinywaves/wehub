@@ -42,6 +42,20 @@ func (service *UserService) SignIn(ctx context.Context, user domain.User) (domai
 	return foundUser, nil
 }
 
-func (service *UserService) Edit(ctx context.Context, user domain.User) error {
+func (service *UserService) EditUserInfo(ctx context.Context, user domain.User) error {
 	return service.userRepository.EditByUserId(ctx, user)
+}
+
+func (service *UserService) GetUserInfo(ctx context.Context, userId int64) (domain.User, error) {
+	user, err := service.userRepository.FindById(ctx, userId)
+	if err != nil {
+		return domain.User{}, err
+	}
+	return domain.User{
+		Id:                  user.Id,
+		Email:               user.Email,
+		Nickname:            user.Nickname,
+		Birthday:            user.Birthday,
+		PersonalDescription: user.PersonalDescription,
+	}, nil
 }
