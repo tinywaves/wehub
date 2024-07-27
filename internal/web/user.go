@@ -183,6 +183,6 @@ func (handler *UserHandler) Get(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, any(user))
+	ctx.JSON(http.StatusOK, user)
 	return
 }
