@@ -12,3 +12,10 @@ services:
       - ./script/mysql/:/docker-entrypoint-initdb.d/
     ports:
       - "13306:3306"
+  redis:
+    image: bitnami/redis:latest
+    container_name: wehub_redis
+    environment:
+        - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - "16379:6379"

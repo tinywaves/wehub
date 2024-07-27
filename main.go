@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/sessions"
-	"github.com/gin-contrib/sessions/cookie"
+	"github.com/gin-contrib/sessions/redis"
 	"strings"
 	"time"
 	"wehub/internal/web"
@@ -26,7 +26,17 @@ func main() {
 		},
 		MaxAge: 12 * time.Hour,
 	}))
-	store := cookie.NewStore([]byte("wehub_custom_secret"))
+	store, err := redis.NewStore(
+		16,
+		"tcp",
+		"localhost:16379",
+		"",
+		[]byte("3D2hLRGG3FttMZLUCg31KhP9hL2R6u6Q"),
+		[]byte("CwwUsFPRppmsvsU7ju7JRjZW4P26cpks"),
+	)
+	if err != nil {
+		panic(err)
+	}
 	server.Use(sessions.Sessions("wehub_ssid", store))
 	server.Use(
 		middleware.
@@ -39,7 +49,7 @@ func main() {
 	rootRouter := server.Group("/v1/api")
 	web.InitUser(rootRouter, db)
 
-	err := server.Run(":8080")
+	err = server.Run(":8080")
 	if err != nil {
 		return
 	}
